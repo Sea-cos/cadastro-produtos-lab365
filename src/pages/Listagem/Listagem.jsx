@@ -24,6 +24,8 @@ const Listagem = () => {
   }, []);
 
   const deletarProduto = async (id) => {
+    const confirmar = window.confirm("Tem certeza que deseja excluir esse produto?");
+    if (!confirmar) return;
     try {
       await axios.delete(`http://localhost:3001/produtos/${id}`);
       setProdutos(produtos.filter((p) => p.id !== id));
