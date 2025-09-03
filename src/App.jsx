@@ -16,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/cadastro" />} />
           <Route path="/cadastro" element={<Cadastro/>} />
+          <Route path="/cadastro/:id" element={<Cadastro/>} />
           <Route path="/listagem" element={<Listagem/>} />
         </Routes>
     </>

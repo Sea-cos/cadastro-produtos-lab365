@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import "./Listagem.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Listagem = () => {
   const [produtos, setProdutos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState("");
-
+  const navigate = useNavigate();
   const carregarProdutos = async () => {
     try {
       const resposta = await axios.get("http://localhost:3001/produtos");
@@ -45,11 +46,11 @@ const Listagem = () => {
           <img src={produto.imagem} alt={produto.nome} />
           <h2>{produto.nome}</h2>
           <p>
-            <strong>Preço:</strong> R$ {produto.preco.toFixed(2)}
+            <strong>Preço:</strong> R$ {produto.preco}
           </p>
           <p>{produto.descricao}</p>
           <div className="acoes">
-            <button onClick={() => alert("Editar ainda não implementado")}>
+            <button onClick={() => navigate(`/cadastro/${produto.id}`)}>
               Editar
             </button>
             <button onClick={() => deletarProduto(produto.id)}>Deletar</button>
