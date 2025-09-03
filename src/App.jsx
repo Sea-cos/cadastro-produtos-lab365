@@ -1,5 +1,7 @@
 import "./App.css";
 import Cadastro from "./pages/Cadastro/Cadastro";
+import Listagem from "./pages/Listagem/Listagem"
+import Navbar from "./Components/Navbar/Navbar" 
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,11 +12,12 @@ import {
 function App() {
   return (
     <>
-      <Router>
+    <Navbar />
         <Routes>
-          <Route path="/" element={<Cadastro />} />
+          <Route path="/" element={<Navigate to="/cadastro" />} />
+          <Route path="/cadastro" element={<Cadastro/>} />
+          <Route path="/listagem" element={<Listagem/>} />
         </Routes>
-      </Router>
     </>
   );
 }
