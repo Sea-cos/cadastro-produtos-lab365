@@ -7,7 +7,9 @@ const Listagem = () => {
   const [produtos, setProdutos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState("");
+  const [filtro, setFiltro] = useState("");
   const navigate = useNavigate();
+
   const carregarProdutos = async () => {
     try {
       const resposta = await axios.get("http://localhost:3001/produtos");
@@ -25,7 +27,9 @@ const Listagem = () => {
   }, []);
 
   const deletarProduto = async (id) => {
-    const confirmar = window.confirm("Tem certeza que deseja excluir esse produto?");
+    const confirmar = window.confirm(
+      "Tem certeza que deseja excluir esse produto?"
+    );
     if (!confirmar) return;
     try {
       await axios.delete(`http://localhost:3001/produtos/${id}`);
@@ -36,29 +40,44 @@ const Listagem = () => {
     }
   };
 
+  const produtosFiltrados = produtos.filter((produto) =>
+    produto.nome.toLowerCase().includes(filtro.toLowerCase())
+  );
+
   if (loading) return <p>Carregando..</p>;
   if (erro) return <p>{erro}..</p>;
 
   return (
-    <div className="lista-produtos">
-      {produtos.map((produto) => (
-        <div key={produto.id} className="card-produto">
-          <img src={produto.imagem} alt={produto.nome} />
-          <h2>{produto.nome}</h2>
-          <p>
-            <strong>Preço:</strong> R$ {produto.preco}
-          </p>
-          <p>{produto.descricao}</p>
-          <div className="acoes">
-            <button onClick={() => navigate(`/cadastro/${produto.id}`)}>
-              Editar
-            </button>
-            <button onClick={() => deletarProduto(produto.id)}>Deletar</button>
+    <>
+      <input
+        type="text"
+        placeholder="Filtrar por nome..."
+        value={filtro}
+        onChange={(e) => setFiltro(e.target.value)}
+        style={{ marginBotton: "20px", padding: "8px", width: "100%" }}
+      />
+      <div className="lista-produtos">
+        {produtosFiltrados.map((produto) => (
+          <div key={produto.id} className="card-produto">
+            <img src={produto.imagem} alt={produto.nome} />
+            <h2>{produto.nome}</h2>
+            <p>
+              <strong>Preço:</strong> R$ {produto.preco}
+            </p>
+            <p>{produto.descricao}</p>
+            <div className="acoes">
+              <button onClick={() => navigate(`/cadastro/${produto.id}`)}>
+                Editar
+              </button>
+              <button onClick={() => deletarProduto(produto.id)}>
+                Deletar
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   );
-}
+};
 
 export default Listagem;
